@@ -20,15 +20,10 @@ public class Servicio {
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id")
     @JsonIgnore
     private Categoria categoria;
-
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "proveedor_id")
-    @JsonIgnore
-    private Proveedor proveedor;*/
 
     public Servicio(){
 
@@ -42,6 +37,7 @@ public class Servicio {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
+
 
     public Long getId() {
         return this.id;
@@ -98,6 +94,15 @@ public class Servicio {
     public void setFechaFin(LocalDateTime fechaFin) {
         this.fechaFin = fechaFin;
     }
+
+    public Categoria getCategoria() {
+        return this.categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+    
 }
 
 

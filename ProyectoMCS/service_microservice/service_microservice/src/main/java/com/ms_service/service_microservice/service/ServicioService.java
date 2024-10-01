@@ -1,17 +1,25 @@
 package com.ms_service.service_microservice.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ms_service.service_microservice.model.Categoria;
 import com.ms_service.service_microservice.model.Servicio;
+import com.ms_service.service_microservice.repository.CategoriaRepository;
 import com.ms_service.service_microservice.repository.ServicioRepository;
 
 @Service
 public class ServicioService {
 
     @Autowired
+    private CategoriaRepository categoriaRepository;
+
+    @Autowired 
     private ServicioRepository servicioRepository;
 
     public List<Servicio> obtenerTodosLosServicios() {
@@ -57,5 +65,23 @@ public class ServicioService {
         }
 
         return servicioRepository.save(servicioExistente);
+    }
+
+    public List<Servicio> buscarPorPalabrasClave(String keyword) {
+        return servicioRepository.findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(keyword, keyword);
+    }
+
+    public Map<String, List<Servicio>> clasificarServiciosPorCategoria() {
+
+        List<Categoria> categorias = categoriaRepository.findAll();
+
+        Map<String, List<Servicio>> serviciosPorCategoria = new HashMap<>();
+
+        for (Categoria categoria : categorias) {
+            List<Servicio> servicios = servicioRepository.findByCategoria(categoria);
+            serviciosPorCategoria.put(categoria.getNombre(), servicios);
+        }
+
+        return serviciosPorCategoria;
     }
 }

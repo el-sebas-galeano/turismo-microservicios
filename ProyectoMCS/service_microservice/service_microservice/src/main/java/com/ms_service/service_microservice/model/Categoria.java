@@ -1,5 +1,8 @@
 package com.ms_service.service_microservice.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -14,9 +17,9 @@ public class Categoria {
     private String nombre;
     private String descripcion;
 
-    @OneToOne(mappedBy = "categoria")
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore
-    private Servicio servicio;
+    private List<Servicio> servicios = new ArrayList<>();
 
     public Categoria(){
 
@@ -26,6 +29,7 @@ public class Categoria {
         this.nombre=nombre;
         this.descripcion=descripcion;
     }
+
 
     public Long getId() {
         return this.id;
@@ -51,12 +55,13 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public Servicio getServicio() {
-        return this.servicio;
+    public List<Servicio> getServicios() {
+        return this.servicios;
     }
 
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
+    public void setServicios(List<Servicio> servicios) {
+        this.servicios = servicios;
     }
+    
 }
 
