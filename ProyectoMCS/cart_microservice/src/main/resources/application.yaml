@@ -3,7 +3,7 @@ spring:
     # Never use '_' in application name
     # Use '-' instead
     # Otherwise gateway may not work correctly
-    name: user-microservice
+    name: cart-microservice
   config:
     import: configserver:http://localhost:8888
 
