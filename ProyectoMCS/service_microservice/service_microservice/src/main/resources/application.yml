@@ -4,5 +4,6 @@ spring:
       uri: http://localhost:8888
       fail-fast: true
   application:
-    name: user-microservice
+    name: service-microservice
+    
 
