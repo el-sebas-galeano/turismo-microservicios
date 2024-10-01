@@ -1,0 +1,17 @@
+server:
+  # To avoid colliding with other apps in port 8080
+  port: 8084
+
+# App metadata
+info:
+  app:
+    name: review-microservice
+    description: Microservicio de Reseñas
+    version: 1.0.0
+  company:
+    name: Epic Games
+    contact:
+      email: jemirouseche@hotmail.com
+      phone: +1234567890
+  build:
+    time: ${BUILD_TIME:2024-08-21T12:30:00Z}

@@ -1,0 +1,10 @@
+GET http://localhost:8080/user-microservice/user/hello
+###
+GET http://localhost:8080/service-microservice/service/hello
+###
+
+GET http://localhost:8080/cart-microservice/cart/hello
+###
+
+GET http://localhost:8080/review-microservice/review/hello
+###
