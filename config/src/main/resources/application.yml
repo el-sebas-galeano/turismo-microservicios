@@ -7,11 +7,11 @@ spring:
 
     cloud:
         config:
-        server:
-            enabled: true
-            native:
-            search-locations:
-            - classpath:/config
+            server:
+                enabled: true
+                native:
+                    search-locations:
+                        - classpath:/config
     profiles:
         active: native
 
@@ -27,16 +27,15 @@ eureka:
 management:
     endpoints:
         web:
-        exposure:
-            include: "*"
+            exposure:
+                include: "*"
     endpoint:
         health:
-        show-details: always
-        prometheus:
-        enabled: true
+            show-details: always
+    
     info:
         env:
-        enabled: true
+            enabled: true
   
 info:
     app:

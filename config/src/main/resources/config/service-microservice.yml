@@ -1,0 +1,16 @@
+spring:
+    application:
+        name: service-microservice
+        
+server:
+    port: 8082
+
+info:
+    app:
+        name: Service Microservice
+        description: Service Microservice
+        version: 1.0.0
+    company:
+        name: Turismo
+    build:
+        time: ${BUILD_TIME:2024-08-21T12:30:00Z}
