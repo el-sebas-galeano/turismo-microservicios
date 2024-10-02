@@ -108,6 +108,16 @@
             "projectName": "review_microservice",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-UserMicroserviceApplication<com.ms_example-simple_microservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.user_microservice.UserMicroserviceApplication",
+            "projectName": "com.ms_example-simple_microservice",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
