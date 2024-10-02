@@ -1,0 +1,9 @@
+[submodule "microservices/purchase-microservice"]
+	path = microservices/purchase-microservice
+	url = https://github.com/el-sebas-galeano/turismo-microservicios-purchase-service.git
+[submodule "microservices/service-microservice"]
+	path = microservices/service-microservice
+	url = https://github.com/el-sebas-galeano/turismo-microservicios-service-microservice.git
+[submodule "microservices/user-microservice"]
+	path = microservices/user-microservice
+	url = https://github.com/el-sebas-galeano/turismo-microservicios-user-microservice.git
