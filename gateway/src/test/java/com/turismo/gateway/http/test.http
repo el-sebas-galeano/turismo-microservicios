@@ -1,0 +1,63 @@
+GET http://localhost:8080/user-microservice/user/listarUsuarios
+
+###
+GET http://localhost:8080/user-microservice/user/findUsuario/2
+###
+POST http://localhost:8080/user-microservice/user/crearUsuario
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez",
+  "email": "juan@example.com",
+  "rol": "Cliente"
+}
+###
+DELETE http://localhost:8080/user-microservice/user/eliminarUsuario/2
+###
+PUT http://localhost:8080/user-microservice/user/actualizarUsuario/3
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez Actualizado",
+  "email": "juan_actualizado@example.com",
+  "rol": "Proveedor"
+}
+
+###
+GET http://localhost:8080/service-microservice/servicio/listarServicios
+
+# Listar todos los carritos
+###
+GET http://localhost:8080/purchase-microservice/carrito
+###
+
+# Obtener un carrito específico por ID
+GET http://localhost:8080/purchase-microservice/carrito/1
+###
+
+# Crear un nuevo carrito
+POST http://localhost:8080/purchase-microservice/carrito
+Content-Type: application/json
+
+{
+  "precioTotal": 120.50,
+  "servicios": [1, 2, 3],
+  "idCliente": 1
+}
+
+###
+
+# Eliminar un carrito por ID
+DELETE http://localhost:8080/purchase-microservice/carrito/1
+
+###
+
+# Actualizar un carrito por ID
+PUT http://localhost:8080/purchase-microservice/carrito/2
+Content-Type: application/json
+
+{
+  "precioTotal": 150.75,
+  "servicios": [2, 3, 4],
+  "idCliente": 2
+}
