@@ -1,0 +1,3 @@
+GET http://localhost:8082/service/hello
+###
+GET http://localhost:8082/servicio/listarServicios

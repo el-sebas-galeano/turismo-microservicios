@@ -1,0 +1,9 @@
+spring:
+  application:
+    # Never use '_' in application name
+    # Use '-' instead
+    # Otherwise gateway may not work correctly
+    name: user-microservice
+  config:
+    import: configserver:http://localhost:8888
+

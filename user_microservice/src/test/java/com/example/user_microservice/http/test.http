@@ -1,0 +1,30 @@
+GET http://localhost:8081/user/hello
+###
+GET http://localhost:8081/user/listarUsuarios
+###
+GET http://localhost:8081/user/findUsuario/1
+###
+
+POST http://localhost:8081/user/crearUsuario
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez",
+  "email": "juan@example.com",
+  "rol": "Cliente"
+}
+
+###
+
+DELETE http://localhost:8081/user/eliminarUsuario/1
+
+###
+
+PUT http://localhost:8081/user/actualizarUsuario/1
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez Actualizado",
+  "email": "juan_actualizado@example.com",
+  "rol": "Proveedor"
+}
