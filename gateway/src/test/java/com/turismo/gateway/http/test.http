@@ -61,3 +61,11 @@ Content-Type: application/json
   "servicios": [2, 3, 4],
   "idCliente": 2
 }
+
+###
+POST http://localhost:8080/service-microservice/graphql
+Content-Type: application/json
+
+{
+  "query": "{ buscarServicios(keyword: \"Servicio A\") { id nombre descripcion } }"
+}
