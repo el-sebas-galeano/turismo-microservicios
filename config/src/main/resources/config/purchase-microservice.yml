@@ -1,16 +1,24 @@
 spring:
-    application:
-        name: purchase-microservice
-        
+  application:
+    name: purchase-microservice
+  datasource:
+    url: ${DB_MS_PURCHASE_URL}
+
 server:
-    port: 8083
+  port: ${PURCHASE_SERVER_PORT}
+
+eureka:
+  instance:
+    preferIpAddress: false
+    hostname: purchase-microservice
+    instance-id: purchase-microservice
 
 info:
-    app:
-        name: Purchase Microservice
-        description: Purchase Microservice
-        version: 1.0.0
-    company:
-        name: Turismo
-    build:
-        time: ${BUILD_TIME:2024-08-21T12:30:00Z}
+  app:
+    name: Purchase Microservice
+    description: Purchase Microservice
+    version: 1.0.0
+  company:
+    name: Turismo
+  build:
+    time: ${BUILD_TIME:2024-08-21T12:30:00Z}

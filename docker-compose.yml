@@ -1,0 +1,222 @@
+services:
+  eureka-server:
+    build: 
+      context: ./eureka
+      dockerfile: Dockerfile
+    ports:
+      - "${EUREKA_SERVER_PORT}:${EUREKA_SERVER_PORT}"
+    networks:
+      - turismo-network
+    env_file:
+      - .env
+    container_name: eureka-server
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  mariadb_keycloak:
+    image: mariadb:lts
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: keycloakdb
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    container_name: mariadb_keycloak
+    ports:
+      - "33100:3306"
+    networks:
+      - turismo-network
+    volumes:
+      - mariadb_keycloak_data:/var/lib/mysql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: ${KEYCLOAK_DB_VENDOR}
+      KC_DB_URL: ${KEYCLOAK_DB_URL}
+      KC_DB_USERNAME: ${DB_USERNAME}
+      KC_DB_PASSWORD: ${DB_PASSWORD}
+      KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
+    container_name: keycloak
+    command: ["start-dev"]
+    env_file:
+      - .env
+    ports:
+      - "${KEYCLOAK_HTTP_PORT}:8080"
+    depends_on:
+      - mariadb_keycloak
+    networks:
+      - turismo-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/realms/master"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  config-server:
+    build: 
+      context: ./config
+      dockerfile: Dockerfile
+    ports:
+      - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
+    networks:
+      - turismo-network
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    env_file:
+      - .env
+    container_name: config-server
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  api-gateway:
+    build: 
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "${API_GATEWAY_SERVER_PORT}:${API_GATEWAY_SERVER_PORT}"
+    networks:
+      - turismo-network
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    env_file:
+      - .env
+    container_name: api-gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  mariadb_purchase:
+    image: mariadb:lts
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: DB_MS_PURCHASE
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    container_name: mariadb_purchase
+    ports:
+      - "33101:3306"
+    networks:
+      - turismo-network
+    volumes:
+      - mariadb_purchase_data:/var/lib/mysql
+
+  mariadb_service:
+    image: mariadb:lts
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: DB_MS_SERVICE
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    container_name: mariadb_service
+    ports:
+      - "33102:3306"
+    networks:
+      - turismo-network
+    volumes:
+      - mariadb_service_data:/var/lib/mysql
+
+  mariadb_user:
+    image: mariadb:lts
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: DB_MS_USER
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    container_name: mariadb_user
+    ports:
+      - "33103:3306"
+    networks:
+      - turismo-network
+    volumes:
+      - mariadb_user_data:/var/lib/mysql
+
+  purchase-microservice:
+    build:
+      context: ./microservices/purchase-microservice
+      dockerfile: Dockerfile
+    ports:
+      - "${PURCHASE_SERVER_PORT}:${PURCHASE_SERVER_PORT}"
+    networks:
+      - turismo-network
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    env_file:
+      - .env
+    container_name: purchase-microservice
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PURCHASE_SERVER_PORT}/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  service-microservice:
+    build:
+      context: ./microservices/service-microservice
+      dockerfile: Dockerfile
+    ports:
+      - "${SERVICE_SERVER_PORT}:${SERVICE_SERVER_PORT}"
+    networks:
+      - turismo-network
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    env_file:
+      - .env
+    container_name: service-microservice
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${SERVICE_SERVER_PORT}/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  user-microservice:
+    build:
+      context: ./microservices/user-microservice
+      dockerfile: Dockerfile
+    ports:
+      - "${USER_SERVER_PORT}:${USER_SERVER_PORT}"
+    networks:
+      - turismo-network
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    env_file:
+      - .env
+    container_name: user-microservice
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${USER_SERVER_PORT}/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+networks:
+  turismo-network:
+    driver: bridge
+
+volumes:
+  mariadb_keycloak_data:
+  mariadb_purchase_data:
+  mariadb_service_data:
+  mariadb_user_data:

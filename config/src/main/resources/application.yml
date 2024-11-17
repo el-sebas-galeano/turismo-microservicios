@@ -1,9 +1,9 @@
 server:
-    port: 8888
+    port: ${CONFIG_SERVER_PORT}
 
 spring:
     application:
-        name: config
+        name: config-server
 
     cloud:
         config:
@@ -19,7 +19,7 @@ eureka:
     client:
         registerWithEureka: true
         service-url:
-            defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+            defaultZone: ${EUREKA_SERVER_URL}
     instance:
         prefer-ip-address: true
 

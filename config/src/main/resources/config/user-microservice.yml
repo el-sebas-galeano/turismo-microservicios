@@ -1,9 +1,17 @@
 spring:
-    application:
-        name: user-microservice
-        
+  application:
+    name: user-microservice
+  datasource:
+    url: ${DB_MS_USER_URL}
+
 server:
-    port: 8081
+  port: ${USER_SERVER_PORT}
+
+eureka:
+  instance:
+    preferIpAddress: false
+    hostname: user-microservice
+    instance-id: user-microservice
 
 info:
     app:

@@ -1,21 +1,28 @@
+spring:
+  datasource:
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: ${DB_DIALECT}
+
 eureka:
-    client:
-        registerWithEureka: true
-        service-url:
-            defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
-    instance:
-        prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL}
 
-# Actuator
 management:
-    endpoints:
-        web:
-            exposure:
-                include: "*"
-    endpoint:
-        health:
-            show-details: always
-
-    info:
-        env:
-            enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
